@@ -14,9 +14,7 @@ if __name__ == '__main__':
 
     vectorize_data_with_bow(X_train, X_test)
 
-
     print(X_train)
     print(X_test)
-
 
     print("It aint much, but it's honest work")
