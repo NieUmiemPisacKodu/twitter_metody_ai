@@ -16,7 +16,7 @@ Ottawy
 **Metody wektoryzacji danych:** 
 * **BoW** *(Done)*
 * **fastText** *(In progress)*
-* **RoBERTa**
+* *RoBERTa*
 
 **Klasyfikatory:**
 * **Logistic Regression** *(Done)*
