@@ -18,8 +18,9 @@ Ottawy
 * **fastText** *(In progress)*
 * *RoBERTa*
 
+
 **Klasyfikatory:**
-* **Logistic Regression** *(Done)*
+* **Logistic Regression** *(In progress)*
 * **Naive Bayes** *(In progress)*
 * **Random Forests**  
 *To be determinated*
