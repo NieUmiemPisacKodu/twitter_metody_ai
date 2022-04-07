@@ -2,7 +2,7 @@
 
 ## Metody AI w badaniu zagrożeń w systemach komputerowych
 
-**Zbiór danych:** https://www.kaggle.com/competitions/utkmls-twitter-spam-detection-competition/data
+**Zbiór danych:** https://www.kaggle.com/competitions/utkmls-twitter-spam-detection-competition/data  
 **Artykuł:** https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9433507  
 **Cel projektu:** Zbudowanie klasyfikatorów w oparciu o dany zbiór danych, pobicie wyników kolegów z
 Ottawy
