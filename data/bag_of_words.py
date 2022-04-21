@@ -9,3 +9,4 @@ def vectorize_data_with_bow(X_train, X_test):
     X_test_bow = vectorizer.transform(X_test).toarray()
 
     pd.DataFrame(X_train_bow, columns=vectorizer.get_feature_names_out())
+    return X_train_bow, X_test_bow
