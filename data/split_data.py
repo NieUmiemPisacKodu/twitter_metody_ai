@@ -17,4 +17,4 @@ def split_data(data):
     X_train = X.iloc[X_train]
     X_test = X.iloc[X_test]
 
-    return X_train, X_test, y_train
+    return X_train, X_test, y_train, y_test
