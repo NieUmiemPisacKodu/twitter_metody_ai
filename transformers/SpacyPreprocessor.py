@@ -4,7 +4,7 @@ import spacy
 class SpacyPreprocessor:
 
     def clean(self, tweet):
-        nlp = spacy.load('en')
+        nlp = spacy.load('en_core_web_sm')
         doc = nlp(tweet.lower())
         return ' '.join([token.lemma_ for token in doc if not token.is_punct and not token.is_space and not token.text.startswith('@')])
 

@@ -43,7 +43,6 @@ if __name__ == '__main__':
             for clf in classifiers:
 
                 pipeline = Pipeline([
-                    ('pre', prep),
                     ('vect', vect),
                     ('clf', clf)
                 ])
@@ -63,7 +62,7 @@ if __name__ == '__main__':
                 print(classification_report(y_test, predicted))
 
                 #cross validation using grid search
-                grid_search = GridSearchCV(pipeline, param_grid={}, cv=4, n_jobs=4, verbose=1)
+                grid_search = GridSearchCV(pipeline, param_grid={}, cv=4, n_jobs=2, verbose=1)
                 grid_search.fit(X_train, y_train)
 
                 result.append(
