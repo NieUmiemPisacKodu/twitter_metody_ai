@@ -14,7 +14,7 @@ class FastTextVectorizer(BaseEstimator, TransformerMixin):
         tokens = FastText.tokenize(tweet)
         for token in tokens:
             vector += model[token]
-        return vector / len(tokens)
+        return vector / (len(tokens) if len(tokens) else 1)
 
     def transform(self, X, y=None):
         X_fasttext = list()
