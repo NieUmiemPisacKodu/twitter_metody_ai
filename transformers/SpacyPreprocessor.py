@@ -11,8 +11,8 @@ class SpacyPreprocessor:
 
 
     def preprocess(self, X):
-        X_test_spacy = list()
+        X_spacy = list()
         for tweet in X:
-            X_test_spacy.append(self.clean(tweet))
-        return pd.Series(X_test_spacy)
+            X_spacy.append(self.clean(tweet))
+        return pd.Series(X_spacy)
 
