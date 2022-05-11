@@ -1,4 +1,5 @@
 import spacy
+import pandas as pd
 
 
 class SpacyPreprocessor:
@@ -13,4 +14,5 @@ class SpacyPreprocessor:
         X_test_spacy = list()
         for tweet in X:
             X_test_spacy.append(self.clean(tweet))
+        return pd.Series(X_test_spacy)
 
