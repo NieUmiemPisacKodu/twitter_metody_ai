@@ -24,6 +24,9 @@ if __name__ == '__main__':
     y_train = splitted_data[2]
     y_test = splitted_data[3]
 
+    X_train_spacy = SpacyPreprocessor().preprocess(X_train_org)
+    X_test_spacy = SpacyPreprocessor().preprocess(X_test_org)
+
     preprocessors = [None, SpacyPreprocessor()]
 
     classifiers = [LogisticRegression(),
@@ -52,8 +55,8 @@ if __name__ == '__main__':
                 print(clf.__class__.__name__)
 
                 if prep:
-                    X_train = SpacyPreprocessor().preprocess(X_train_org)
-                    X_test = SpacyPreprocessor().preprocess(X_test_org)
+                    X_train = X_train_spacy
+                    X_test = X_test_spacy
                 else:
                     X_train = X_train_org
                     X_test = X_test_org
@@ -62,7 +65,7 @@ if __name__ == '__main__':
                 print(classification_report(y_test, predicted))
 
                 #cross validation using grid search
-                grid_search = GridSearchCV(pipeline, param_grid={}, cv=4, n_jobs=2, verbose=1)
+                grid_search = GridSearchCV(pipeline, param_grid={}, cv=4, n_jobs=1, verbose=1)
                 grid_search.fit(X_train, y_train)
 
                 result.append(
