@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
@@ -15,6 +15,7 @@ from transformers.SpacyPreprocessor import SpacyPreprocessor
 from transformers.fasttext_vectorizer import FastTextVectorizer
 from data.split_data import split_data
 from data.twitter_data import load_data
+
 
 if __name__ == '__main__':
     data = load_data()
@@ -29,12 +30,13 @@ if __name__ == '__main__':
     X_train_spacy = SpacyPreprocessor().preprocess(X_train_org)
     X_test_spacy = SpacyPreprocessor().preprocess(X_test_org)
 
+
     preprocessors = [None, SpacyPreprocessor()]
 
     classifiers = [LogisticRegression(),
                    RandomForestClassifier(max_depth=2, random_state=0),
                    KNeighborsClassifier(),
-                   # GaussianNB(),
+                   MultinomialNB(),
                    MLPClassifier(),
                    SVC()]
     vectorizers = [CountVectorizer(max_features=300),
