@@ -4,17 +4,18 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
-from sklearn.model_selection import GridSearchCV
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import FeatureUnion
 from sklearn.svm import SVC
 
+from transformers.FeaturesVectorizer import FeaturesVectorizer
 from transformers.SpacyPreprocessor import SpacyPreprocessor
 from transformers.fasttext_vectorizer import FastTextVectorizer
 from data.split_data import split_data
 from data.twitter_data import load_data
+
 
 if __name__ == '__main__':
     data = load_data()
@@ -34,51 +35,66 @@ if __name__ == '__main__':
     classifiers = [LogisticRegression(),
                    RandomForestClassifier(max_depth=2, random_state=0),
                    KNeighborsClassifier(),
-                   # GaussianNB(),
+                   # MultinomialNB(),
                    MLPClassifier(),
-                   SVC()]
+                   SVC()
+                   ]
     vectorizers = [CountVectorizer(max_features=300),
                    TfidfVectorizer(max_features=300),
                    FastTextVectorizer()]
+
+    features = [False, True]
 
     result = []
 
     for prep in preprocessors:
         for vect in vectorizers:
-            for clf in classifiers:
+            for feat in features:
+                for clf in classifiers:
 
-                pipeline = Pipeline([
-                    ('vect', vect),
-                    ('clf', clf)
-                ])
+                    print("Preprocessor: " + prep.__class__.__name__)
+                    print("Vectorizer: " + vect.__class__.__name__)
+                    print("With features: " + str(feat))
+                    print("Classifier " + clf.__class__.__name__)
 
-                print(prep.__class__.__name__)
-                print(vect.__class__.__name__)
-                print(clf.__class__.__name__)
+                    if prep:
+                        X_train = X_train_spacy
+                        X_test = X_test_spacy
+                    else:
+                        X_train = X_train_org
+                        X_test = X_test_org
 
-                if prep:
-                    X_train = X_train_spacy
-                    X_test = X_test_spacy
-                else:
-                    X_train = X_train_org
-                    X_test = X_test_org
+                    if feat:
+                        vector = FeatureUnion([
+                            ('cv', vect),
+                            ('features', FeaturesVectorizer(data))
+                        ])
+                    else:
+                        vector = vect
 
-                #cross validation using grid search
-                grid_search = GridSearchCV(pipeline, param_grid={}, cv=4, n_jobs=1, verbose=1)
-                predicted = grid_search.fit(X_train, y_train).predict(X_test)
-                print(classification_report(y_test, predicted))
-                print(grid_search.best_score_)
+                    X_train = vector.fit_transform(X_train)
+                    X_test = vector.transform(X_test)
+                    predicted = clf.fit(X_train, y_train).predict(X_test)
+                    report = classification_report(y_test, predicted, output_dict=True)
+                    print(report['accuracy'])
+                    print()
 
-                result.append(
+                    result.append(
                         {
-                            'grid': grid_search,
-                            'best_score': grid_search.best_score_
+                            'prep': prep,
+                            'vect': vect,
+                            'feat': feat,
+                            'clf': clf,
+                            'best_score': report['accuracy']
                         }
                     )
 
     result = sorted(result, key=itemgetter('best_score'), reverse=True)
 
-    grid = result[0]['grid']
-    print("Best: ", grid.best_estimator_)
-    print(classification_report(y_test, grid.best_estimator_.predict(X_test)))
+    print("Best: ")
+    print("Preprocessor: " + str(result[0]['prep']))
+    print("Vectorizer: " + str(result[0]['vect']))
+    print("With features: " + str(result[0]['feat']))
+    print("Classifier " + str(result[0]['clf']))
+    print(result[0]['best_score'])
 

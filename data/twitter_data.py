@@ -7,5 +7,6 @@ def load_data():
     df.loc[[7552], ['Type']] = df.loc[[7552]]['Unnamed: 7']
     df.loc[[12843], ['location']] = df.loc[[12843]]['location'] + df.loc[[12843]]['Type']
     df.loc[[12843], ['Type']] = df.loc[[12843]]['Unnamed: 7']
-    df.loc[[7552]]
+    df = df.drop(columns=['Unnamed: 7'])
+    df = df.fillna(0)
     return df
