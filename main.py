@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
@@ -30,6 +31,7 @@ if __name__ == '__main__':
     X_train_spacy = SpacyPreprocessor().preprocess(X_train_org)
     X_test_spacy = SpacyPreprocessor().preprocess(X_test_org)
 
+
     preprocessors = [None, SpacyPreprocessor()]
 
     classifiers = [LogisticRegression(),
@@ -37,8 +39,7 @@ if __name__ == '__main__':
                    KNeighborsClassifier(),
                    # MultinomialNB(),
                    MLPClassifier(),
-                   SVC()
-                   ]
+                   SVC()]
     vectorizers = [CountVectorizer(max_features=300),
                    TfidfVectorizer(max_features=300),
                    FastTextVectorizer()]

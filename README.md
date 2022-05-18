@@ -13,16 +13,27 @@ Ottawy
 **Adrian Tatuśko** 243269​
 
 ## Dane techniczne
+**Preprocessing danych:**
+* **Spacy** (Done)
+* *(To be determinated)*
+
 **Metody wektoryzacji danych:** 
 * **BoW** *(Done)*
-* **fastText** *(In progress)*
-* *RoBERTa*
+* **TD-IDF** *(Done)*
+* **fastText** *(Done)*
+* **RoBERTa** *(In progress)*
 
 
 **Klasyfikatory:**
-* **Logistic Regression** *(In progress)*
-* **Naive Bayes** *(In progress)*
-* **Random Forests**  
-*To be determinated*
+* **Logistic Regression** *(Done)*
+* **KNN** *(Done)*
+* **Naive Bayes** *(Done)*
+* **Random Forests**  *(Done)*
+* **MLP Classifier** *(Done)*
+* **SVC** *(Done)*
+
+**Cross-walidacja:**
+* **Grid search** *(Done)*
+* *(To be determinated)*
 
 ![](https://i.kym-cdn.com/entries/icons/mobile/000/028/021/work.jpg)
