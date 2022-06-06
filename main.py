@@ -1,6 +1,8 @@
+import logging
 from operator import itemgetter
 
 import pandas as pd
+from lime.lime_tabular import LimeTabularExplainer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -12,6 +14,10 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import FeatureUnion
 from sklearn.svm import SVC
 from pathlib import Path
+from lime import lime_text
+from sklearn.pipeline import make_pipeline
+from lime.lime_text import LimeTextExplainer
+
 
 from data.split_data import split_data
 from transformer.FeaturesVectorizer import FeaturesVectorizer
@@ -52,7 +58,7 @@ if __name__ == '__main__':
         KNeighborsClassifier(),
         # MultinomialNB(),
         MLPClassifier(),
-        SVC()]
+        SVC(probability=True)]
 
     vectorizers = [
         CountVectorizer(max_features=300),
@@ -110,6 +116,23 @@ if __name__ == '__main__':
                             'best_score': accuracy
                         }
                     )
+
+                    try:
+                        spam_id = 204
+                        quality_id = 203
+
+                        c = make_pipeline(vector, clf)
+                        explainer = LimeTextExplainer(class_names=['Quality', 'Spam'])
+                        filename = prep.__class__.__name__ + '_' + vect.__class__.__name__ + '_' + str(feat) + '_' + clf.__class__.__name__
+
+                        exp = explainer.explain_instance(X[spam_id], c.predict_proba, num_features=10)
+                        exp.save_to_file('exp/' + filename + '_spam.html')
+
+                        exp = explainer.explain_instance(X[quality_id], c.predict_proba, num_features=10)
+                        exp.save_to_file('exp/' + filename + '_quality.html')
+                    except Exception as e:
+                        logging.error('Error at %s', 'lime', exc_info=e)
+
 
     print("RoBERTa Transformer")
     predicted = RobertaTransformer().transform(X_test_org)
